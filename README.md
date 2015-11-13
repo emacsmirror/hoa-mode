@@ -1,0 +1,1 @@
+- hoa-mode.el is a major mode for editing automata in the [Hanoi Omega Automata format](http://adl.github.io/hoaf/).
