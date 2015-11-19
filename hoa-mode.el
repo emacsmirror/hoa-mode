@@ -43,11 +43,15 @@
   "Face used for Inf, Fin, t, and f.")
 
 (defface hoa-acceptance-set-face
-  '((t :inherit font-lock-constant-face))
+  '((t :inherit font-lock-constant-face :weight bold))
   "Face used for acceptance sets.")
 
 (defface hoa-alias-face
   '((t :inherit font-lock-variable-name-face))
+  "Face used for aliases.")
+
+(defface hoa-label-face
+  '((t :inherit font-lock-constant-face))
   "Face used for aliases.")
 
 (defvar hoa-font-lock-keywords
@@ -58,7 +62,12 @@
    '("\\<--\\(BODY\\|END\\|ABORT\\)--" . 'hoa-keyword-face)
    '("\\<\\(Inf\\|Fin\\|t\\|f\\)\\>" . 'hoa-builtin-face)
    '("(\\s-*\\([0-9]+\\)\\s-*)" 1 'hoa-acceptance-set-face)
-   '("{\\(\\([0-9]\\|\\s-\\)+\\)}" 1 'hoa-acceptance-set-face))
+   '("{\\(\\([0-9]\\|\\s-\\)+\\)}" 1 'hoa-acceptance-set-face)
+   ;; FIXME: does not work if alias are used inside brackets.  Also it
+   ;; would be better to color only the atomic propositions numbers,
+   ;; and do that on the Alias: lines as well.  It guess this means
+   ;; writing a matcher function.
+   '("\\[\\([^]]+\\)\\]" 1 'hoa-label-face))
   "Hilighting rules for `hoa-mode'.")
 
 (defvar hoa-mode-syntax-table
