@@ -3,22 +3,32 @@
 ;; Copyright (C) 2015  Alexandre Duret-Lutz
 
 ;; Author: Alexandre Duret-Lutz <adl@lrde.epita.fr>
-;; Version: 0.1
+;; Maintainer: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; URL: https://gitlab.lrde.epita.fr/spot/emacs-modes
+;; Keywords: major-mode, automata, convenience
+;; Created: 2015-11-13
+
+;;; License:
 
 ;; This package is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
 ;; any later version.
-
+;;
 ;; This package is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; Major mode for editing files in the Hanoi Omega Automata format.
+;; (See URL `http://adl.github.io/hoaf/' for that format.)  This
+;; provides rules for syntax highlighting, some navigation functions,
+;; and a convenient way to display the automata in Emacs.
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.hoa\\'" . hoa-mode))
@@ -112,7 +122,7 @@
       (backward-word))
   (re-search-forward "--\\(END\\|ABORT\\)--\n?"))
 
-(defun hoa-mark-current-automaton ()
+(defun hoa-mark-automaton-at-point ()
   "Mark the automaton at point."
   (interactive)
   (hoa-end-of-automaton)
@@ -129,14 +139,18 @@
   "Command used to display HOA files.
 
 The command is expected to take the automaton in HOA format on
-its input stream, and output an image in PNG format on its output
-stream.")
+its standard input, and output an image in PNG format on its
+standard output.
 
-(defun hoa-display-current-automaton ()
-  "Display the current automaton.
+The default value uses the tools autfilt (part of the Spot
+package, see URL `https://spot.lrde.epita.fr/') and dot (part of
+the GraphViz package, see URL `http://www.graphviz.org/').")
+
+(defun hoa-display-automaton-at-point ()
+  "Display the automaton-at-point.
 
 This uses the command in `hoa-display-command' to convert HOA
-into png, and then display the result in `hoa-display-buffer'. If
+into PNG, and then display the result in `hoa-display-buffer'. If
 the command terminates with an error, its standard error is put
 in `hoa-display-error-buffer' and shown."
   (interactive)
@@ -174,19 +188,27 @@ in `hoa-display-error-buffer' and shown."
   (let ((map (make-keymap)))
     (define-key map "\M-e" 'hoa-end-of-automaton)
     (define-key map "\M-a" 'hoa-start-of-automaton)
-    (define-key map "\C-\M-h" 'hoa-mark-current-automaton)
-    (define-key map "\C-c\C-c" 'hoa-display-current-automaton)
+    (define-key map "\C-\M-h" 'hoa-mark-automaton-at-point)
+    (define-key map "\C-c\C-c" 'hoa-display-automaton-at-point)
     map)
   "Keymap for `hoa-mode'.")
 
 (defvar hoa-mode-hook nil
   "Hook run whenever `hoa-mode' is activated.")
 
+;;;### autoload
 (defun hoa-mode ()
-  "Major mode for editing HOA files.
+  "Major mode for editing files in the Hanoi Omega Automata format.
 
-`http://adl.github.io/hoaf/`
-"
+See URL `http://adl.github.io/hoaf/' for a definition of that format.
+
+The following key bindings are installed in hoa-mode:
+
+\\{hoa-mode-map}
+
+By default the `hoa-display-automaton-at-point' function requires
+extra software (Spot and GraphViz), but can be configured to use
+other tools.  See that function for details."
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table hoa-mode-syntax-table)
