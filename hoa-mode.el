@@ -30,39 +30,57 @@
 ;; provides rules for syntax highlighting, some navigation functions,
 ;; and a convenient way to display the automata in Emacs.
 
+;;; Code:
+
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.hoa\\'" . hoa-mode))
 
 ;;;###autoload
 (add-to-list 'magic-mode-alist '("\\<HOA:\\s-*v" . hoa-mode))
 
+(defgroup hoa-mode nil
+  "Major mode for editing Hanoi Omega Automata files."
+  :group 'data)
+
+(defgroup hoa-mode-faces nil
+  "Faces used by `hoa-mode'."
+  :group 'hoa-mode
+  :group 'faces)
+
 (defface hoa-header-uppercase-face
   '((t :inherit font-lock-type-face :weight bold))
-  "Face for headers with an uppercase initial.")
+  "Face for headers with an uppercase initial."
+  :group 'hoa-mode-faces)
 
 (defface hoa-header-lowercase-face
   '((t :inherit font-lock-type-face :weight normal))
-  "Face for headers with a lowercase initial.")
+  "Face for headers with a lowercase initial."
+  :group 'hoa-mode-faces)
 
 (defface hoa-keyword-face
   '((t :inherit font-lock-keyword-face))
-  "Face used for --BODY--, --END--, and --ABORT--.")
+  "Face used for --BODY--, --END--, and --ABORT--."
+  :group 'hoa-mode-faces)
 
 (defface hoa-builtin-face
   '((t :inherit font-lock-builtin-face))
-  "Face used for Inf, Fin, t, and f.")
+  "Face used for Inf, Fin, t, and f."
+  :group 'hoa-mode-faces)
 
 (defface hoa-acceptance-set-face
   '((t :inherit font-lock-constant-face :weight bold))
-  "Face used for acceptance sets.")
+  "Face used for acceptance sets."
+  :group 'hoa-mode-faces)
 
 (defface hoa-alias-face
   '((t :inherit font-lock-variable-name-face))
-  "Face used for aliases.")
+  "Face used for aliases."
+  :group 'hoa-mode-faces)
 
 (defface hoa-ap-number-face
   '((t :inherit font-lock-constant-face))
-  "Face used for numbers that denote atomic propositions.")
+  "Face used for numbers that denote atomic propositions."
+  :group 'hoa-mode-faces)
 
 (defconst hoa-alias-regex
   "@[a-zA-Z0-9_-]*\\_>"
@@ -129,13 +147,17 @@
   (set-mark (point))
   (hoa-start-of-automaton))
 
-(defvar hoa-display-error-buffer "*hoa-dot-error*"
-  "The name of the buffer to display errors from `hoa-display-command'.")
+(defcustom hoa-display-error-buffer "*hoa-dot-error*"
+  "The name of the buffer to display errors from `hoa-display-command'."
+  :group 'hoa-mode
+  :type 'string)
 
-(defvar hoa-display-buffer "*hoa-display*"
-  "The name of the buffer to display automata.")
+(defcustom hoa-display-buffer "*hoa-display*"
+  "The name of the buffer to display automata."
+  :group 'hoa-mode
+  :type 'string)
 
-(defvar hoa-display-command "autfilt --dot='barf(Lato)' | dot -Tpng"
+(defcustom hoa-display-command "autfilt --dot='barf(Lato)' | dot -Tpng"
   "Command used to display HOA files.
 
 The command is expected to take the automaton in HOA format on
@@ -144,15 +166,17 @@ standard output.
 
 The default value uses the tools autfilt (part of the Spot
 package, see URL `https://spot.lrde.epita.fr/') and dot (part of
-the GraphViz package, see URL `http://www.graphviz.org/').")
+the GraphViz package, see URL `http://www.graphviz.org/')."
+  :group 'hoa-mode
+  :type 'string)
 
 (defun hoa-display-automaton-at-point ()
   "Display the automaton-at-point.
 
 This uses the command in `hoa-display-command' to convert HOA
-into PNG, and then display the result in `hoa-display-buffer'. If
-the command terminates with an error, its standard error is put
-in `hoa-display-error-buffer' and shown."
+into PNG, and then display the result in `hoa-display-buffer'.
+If the command terminates with an error, its standard error is
+put in `hoa-display-error-buffer' and shown."
   (interactive)
   (let ((b (save-excursion (if (not (looking-at "HOA:"))
 			       (hoa-start-of-automaton)
@@ -193,8 +217,10 @@ in `hoa-display-error-buffer' and shown."
     map)
   "Keymap for `hoa-mode'.")
 
-(defvar hoa-mode-hook nil
-  "Hook run whenever `hoa-mode' is activated.")
+(defcustom hoa-mode-hook nil
+  "Hook run whenever `hoa-mode' is activated."
+  :group 'hoa-mode
+  :type 'hook)
 
 ;;;### autoload
 (defun hoa-mode ()
