@@ -86,30 +86,33 @@
   "@[a-zA-Z0-9_-]*\\_>"
   "Regex for matching aliases.")
 
-(defvar hoa-font-lock-keywords
-  (list
-   '("\\_<[A-Z][a-zA-Z0-9_-]*:" . 'hoa-header-uppercase-face)
-   '("\\_<[a-z][a-zA-Z0-9_-]*:" . 'hoa-header-lowercase-face)
-   `(,hoa-alias-regex . 'hoa-alias-face)
-   '("\\_<--\\(BODY\\|END\\|ABORT\\)--" . 'hoa-keyword-face)
-   '("\\_<\\(Inf\\|Fin\\|t\\|f\\)\\_>" . 'hoa-builtin-face)
-   '("(\\s-*\\([0-9]+\\)\\s-*)" 1 'hoa-acceptance-set-face)
-   '("{\\(\\([0-9]\\|\\s-\\)+\\)}" 1 'hoa-acceptance-set-face)
-   ;; numbers between brackets denote atomic propositions.
-   '("\\["
-     ("\\_<[0-9]+\\_>"
-      (save-excursion (search-forward "]" nil t))
-      nil
-      (0 'hoa-ap-number-face)))
-   ;; likewise for numbers following an Alias: definition
-   `(,(concat "Alias:\\s-*" hoa-alias-regex)
-     ("\\_<[0-9]+\\_>"
-      (save-excursion
-	(re-search-forward
-	 (concat "\\(" hoa-alias-regex "\\|[0-9|&!]\\|\\s-\\)+") nil t))
-      nil
-      (0 'hoa-ap-number-face))))
-  "Hilighting rules for `hoa-mode'.")
+(defvar hoa-font-lock-keywords-1
+  `(("\\_<--\\(:?BODY\\|END\\|ABORT\\)--" . 'hoa-keyword-face)
+    ("\\_<\\(:?Inf\\|Fin\\|t\\|f\\)\\_>" . 'hoa-builtin-face)
+    ("\\_<[A-Z][a-zA-Z0-9_-]*:" . 'hoa-header-uppercase-face)
+    ("\\_<[a-z][a-zA-Z0-9_-]*:" . 'hoa-header-lowercase-face)
+    (,hoa-alias-regex . 'hoa-alias-face))
+  "Fontification rules for keywords, builtins, headers and aliases.")
+
+(defvar hoa-font-lock-keywords-2
+  (append hoa-font-lock-keywords-1
+	  `(("(\\s-*\\([0-9]+\\)\\s-*)" 1 'hoa-acceptance-set-face)
+	    ("{\\(\\([0-9]\\|\\s-\\)+\\)}" 1 'hoa-acceptance-set-face)
+	    ;; numbers between brackets denote atomic propositions.
+	    ("\\["
+	     ("\\_<[0-9]+\\_>"
+	      (save-excursion (search-forward "]" nil t))
+	      nil
+	      (0 'hoa-ap-number-face)))
+	    ;; likewise for numbers following an Alias: definition
+	    (,(concat "Alias:\\s-*" hoa-alias-regex)
+	     ("\\_<[0-9]+\\_>"
+	      (save-excursion
+		(re-search-forward
+		 (concat "\\(" hoa-alias-regex "\\|[0-9|&!]\\|\\s-\\)+") nil t))
+	      nil
+	      (0 'hoa-ap-number-face)))))
+  "Complete fontification rules, including acceptance sets and AP numbers.")
 
 (defvar hoa-mode-syntax-table
   (let ((st (make-syntax-table)))
@@ -238,7 +241,9 @@ other tools.  See that function for details."
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table hoa-mode-syntax-table)
-  (setq font-lock-defaults '(hoa-font-lock-keywords)
+  (setq font-lock-defaults '((hoa-font-lock-keywords-1
+			      hoa-font-lock-keywords-1
+			      hoa-font-lock-keywords-2))
 	major-mode 'hoa-mode
 	mode-name "HOA")
   (use-local-map hoa-mode-map)
