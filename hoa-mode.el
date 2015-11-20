@@ -238,10 +238,10 @@ other tools.  See that function for details."
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table hoa-mode-syntax-table)
-  (set (make-local-variable 'font-lock-defaults) '(hoa-font-lock-keywords))
+  (setq font-lock-defaults '(hoa-font-lock-keywords)
+	major-mode 'hoa-mode
+	mode-name "HOA")
   (use-local-map hoa-mode-map)
-  (setq major-mode 'hoa-mode)
-  (setq mode-name "HOA")
   (run-hooks 'hoa-mode-hook))
 
 (provide 'hoa-mode)
