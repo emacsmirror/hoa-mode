@@ -222,11 +222,6 @@ put in `hoa-display-error-buffer' and shown."
     map)
   "Keymap for `hoa-mode'.")
 
-(defcustom hoa-mode-hook nil
-  "Hook run whenever `hoa-mode' is activated."
-  :group 'hoa-mode
-  :type 'hook)
-
 ;;;### autoload
 (define-derived-mode hoa-mode fundamental-mode "HOA"
   "Major mode for editing files in the Hanoi Omega Automata format.
@@ -240,6 +235,7 @@ The following key bindings are installed in hoa-mode:
 By default the `hoa-display-automaton-at-point' function requires
 extra software (Spot and GraphViz), but can be configured to use
 other tools.  See that function for details."
+  :group 'hoa-mode
   (setq font-lock-defaults '((hoa-font-lock-keywords-1
 			      hoa-font-lock-keywords-1
 			      hoa-font-lock-keywords-2))))
