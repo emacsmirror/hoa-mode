@@ -109,7 +109,8 @@
 	     ("\\_<[0-9]+\\_>"
 	      (save-excursion
 		(re-search-forward
-		 (concat "\\(" hoa-alias-regex "\\|[0-9|&!]\\|\\s-\\)+") nil t))
+		 (concat "\\(" hoa-alias-regex
+			 "\\|[0-9|&!]\\|\\_<[ft]\\_>\\|\\s-\\)+") nil t))
 	      nil
 	      (0 'hoa-ap-number-face)))))
   "Complete fontification rules, including acceptance sets and AP numbers.")
