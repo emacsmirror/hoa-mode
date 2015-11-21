@@ -195,7 +195,8 @@ put in `hoa-display-error-buffer' and shown."
 	   (call-process-region b e shell-file-name nil (list dotbuf errfile)
 				nil shell-command-switch hoa-display-command)))
       (when (equal 0 exit-status)
-	(let ((hoa-img (create-image (with-current-buffer dotbuf (buffer-string))
+	(let ((hoa-img (create-image (with-current-buffer dotbuf
+				       (buffer-string))
 				     'png t)))
 	  (with-current-buffer (get-buffer-create hoa-display-buffer)
 	    (erase-buffer)
