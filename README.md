@@ -18,7 +18,7 @@ To install from MELPA, first configure your emacs to use MELPA:
 
 Once that is done, you can install `hoa-mode` is many ways.  For
 instance interactively by running `M-x package-list-packages`, moving
-to `hoa-mode`, pressing `i` (for install), and `x` (for exectude).  Or
+to `hoa-mode`, pressing `i` (for install), and `x` (for execute).  Or
 you can also do `M-x package-install` and then just enter `hoa-mode`.
 Or you could also use a system like
 [`use-package`](https://github.com/jwiegley/use-package) in your
