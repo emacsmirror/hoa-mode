@@ -226,7 +226,7 @@ put in `hoa-display-error-buffer' and shown."
   :type 'hook)
 
 ;;;### autoload
-(defun hoa-mode ()
+(define-derived-mode hoa-mode fundamental-mode "HOA"
   "Major mode for editing files in the Hanoi Omega Automata format.
 
 See URL `http://adl.github.io/hoaf/' for a definition of that format.
@@ -238,17 +238,9 @@ The following key bindings are installed in hoa-mode:
 By default the `hoa-display-automaton-at-point' function requires
 extra software (Spot and GraphViz), but can be configured to use
 other tools.  See that function for details."
-  (interactive)
-  (kill-all-local-variables)
-  (set-syntax-table hoa-mode-syntax-table)
   (setq font-lock-defaults '((hoa-font-lock-keywords-1
 			      hoa-font-lock-keywords-1
-			      hoa-font-lock-keywords-2))
-	major-mode 'hoa-mode
-	mode-name "HOA")
-  (use-local-map hoa-mode-map)
-  (run-hooks 'hoa-mode-hook))
+			      hoa-font-lock-keywords-2))))
 
 (provide 'hoa-mode)
-
 ;;; hoa-mode.el ends here
