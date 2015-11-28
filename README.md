@@ -1,4 +1,4 @@
-# `hoa-mode.el`
+# `hoa-mode.el` [![MELPA](http://melpa.org/packages/hoa-mode-badge.svg)](http://melpa.org/#/hoa-mode)
 
 A major mode for editing automata in the [Hanoi Omega Automata
 format](http://adl.github.io/hoaf/).
