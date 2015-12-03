@@ -83,14 +83,14 @@
   :group 'hoa-mode-faces)
 
 (defconst hoa-alias-regex
-  "@[a-zA-Z0-9_-]*\\_>"
+  "@[a-zA-Z0-9_.-]*\\_>"
   "Regex for matching aliases.")
 
 (defvar hoa-font-lock-keywords-1
   `(("\\_<--\\(:?BODY\\|END\\|ABORT\\)--" . 'hoa-keyword-face)
     ("\\_<\\(:?Inf\\|Fin\\|t\\|f\\)\\_>" . 'hoa-builtin-face)
-    ("\\_<[A-Z][a-zA-Z0-9_-]*:" . 'hoa-header-uppercase-face)
-    ("\\_<[a-z][a-zA-Z0-9_-]*:" . 'hoa-header-lowercase-face)
+    ("\\_<[A-Z][a-zA-Z0-9_.-]*:" . 'hoa-header-uppercase-face)
+    ("\\_<[a-z][a-zA-Z0-9_.-]*:" . 'hoa-header-lowercase-face)
     (,hoa-alias-regex . 'hoa-alias-face))
   "Fontification rules for keywords, builtins, headers and aliases.")
 
@@ -121,6 +121,7 @@
     (modify-syntax-entry ?> "." st)
     (modify-syntax-entry ?| "." st)
     (modify-syntax-entry ?_ "_" st)
+    (modify-syntax-entry ?. "_" st)
     (modify-syntax-entry ?- "_" st)
     (modify-syntax-entry ?$ "." st)
     (modify-syntax-entry ?& "." st)
