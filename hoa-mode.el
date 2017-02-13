@@ -1,6 +1,6 @@
-;;; hoa-mode.el --- Major mode for the Hanoi Omega Automata format
+;;; hoa-mode.el --- Major mode for the HOA format -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015  Alexandre Duret-Lutz
+;; Copyright (C) 2015, 2017  Alexandre Duret-Lutz
 
 ;; Author: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; Maintainer: Alexandre Duret-Lutz <adl@lrde.epita.fr>
