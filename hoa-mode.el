@@ -159,7 +159,7 @@
 (defun hoa-display-buffer-active ()
   "Check whether an HOA automaton is actually displayed.
 
-Return nil iff it is not."
+Returns the window of the display buffer, or nil."
   (get-buffer-window hoa-display-buffer))
 
 (defun hoa-display-buffer-refresh ()
@@ -248,7 +248,8 @@ be edited before it is executed."
             (display-buffer (current-buffer))
             (setq buffer-read-only nil)
             (erase-buffer)
-            (pcase-let ((`(,ax ,ay ,bx ,by) (window-body-pixel-edges)))
+            (pcase-let ((`(,ax ,ay ,bx ,by)
+                         (window-body-pixel-edges (hoa-display-buffer-active))))
               (let ((win-width (- bx ax))
                     (win-height (- by ay)))
                 (insert-image (create-image img-string img-type t
