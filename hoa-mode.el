@@ -202,15 +202,24 @@ be edited before it is executed."
 	   (call-process-region b e shell-file-name nil (list dotbuf errfile)
 				nil shell-command-switch hoa-display-command)))
       (when (equal 0 exit-status)
-	(let ((hoa-img (create-image (with-current-buffer dotbuf
-				       (buffer-string))
-				     'png t)))
-	  (with-current-buffer (get-buffer-create hoa-display-buffer)
-	    (setq buffer-read-only nil)
-	    (erase-buffer)
-	    (insert-image hoa-img)
-	    (setq buffer-read-only t)
-	    (display-buffer (current-buffer)))))
+        (let ((img-string (with-current-buffer dotbuf (buffer-string)))
+              (img-type (if (image-type-available-p 'imagemagick)
+                             'imagemagick
+                          'png)))
+          ;; Display the buffer before we load the image, so that we
+          ;; can specify a max size.  These max-width/max-height are
+          ;; ignored if 'imagemagick is not installed.
+          (with-current-buffer (get-buffer-create hoa-display-buffer)
+            (display-buffer (current-buffer))
+            (setq buffer-read-only nil)
+            (erase-buffer)
+            (pcase-let ((`(,ax ,ay ,bx ,by) (window-body-pixel-edges)))
+              (let ((win-width (- bx ax))
+                    (win-height (- by ay)))
+                (insert-image (create-image img-string img-type t
+                                            :max-width win-width
+                                            :max-height win-height))))
+	    (setq buffer-read-only t)))))
       (when (file-exists-p errfile)
 	(when (< 0 (nth 7 (file-attributes errfile)))
 	  (with-current-buffer (get-buffer-create hoa-display-error-buffer)
@@ -219,7 +228,7 @@ be edited before it is executed."
 	    (format-insert-file errfile nil)
 	    (display-buffer (current-buffer))))
 	(delete-file errfile))
-      (kill-buffer dotbuf))))
+      (kill-buffer dotbuf)))
 
 (defvar hoa-mode-map
   (let ((map (make-keymap)))
