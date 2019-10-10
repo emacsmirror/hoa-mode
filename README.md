@@ -3,7 +3,12 @@
 A major mode for editing automata in the [Hanoi Omega Automata
 format](http://adl.github.io/hoaf/).
 
+Offers syntax-highlighting, navigation in a file with multiple
+automata, and visualization.
+
 ![screenshot](hoa-mode.png)
+
+## Installation
 
 You can either install from MELPA, or from Git.
 
@@ -39,3 +44,24 @@ Then tell your emacs about it:
 
 Using emacs' package system is better if you depend on a lot of
 third-party packages.
+
+
+## Usage
+
+
+- If the cursor is on an automaton in the HOA format, type `C-c C-c`
+  to display the automaton at point.  This calls
+  [`autfilt`](https://spot.lrde.epita.fr/autfilt.html) and
+  [`dot`](http://www.graphviz.org/) for rendering.  The command used
+  may be altered using `C-u C-c C-c` or by setting the
+  `hoa-display-command` variable.
+
+- `M-a` and `M-e` are bound respectively to `hoa-start-of-automaton` and
+  `hoa-end-of-automaton` and may be used to move into long list of automata.
+  They do not update the displayed automaton (if any).
+
+- `M-<up>` and `M-<down>` are bound respectively to `hoa-previous-automaton` and
+  `hoa-next-automaton`.  They behave similarly, but will also update the displayed
+   automaton if one is displayed (so you should call `C-c C-c` first).
+
+- `C-M-h` is bound to `hoa-mark-automaton-at-point`.
