@@ -131,6 +131,10 @@
     st)
   "Syntax table for `hoa-mode'.")
 
+(defun hoa-at-start-of-automaton ()
+  "Is the point at the start of an automaton?"
+  (looking-at "HOA:"))
+
 (defun hoa-start-of-automaton ()
   "Move to the start of the automaton at point."
   (interactive)
@@ -151,6 +155,37 @@
   (hoa-end-of-automaton)
   (set-mark (point))
   (hoa-start-of-automaton))
+
+(defun hoa-display-buffer-active ()
+  "Check whether an HOA automaton is actually displayed.
+
+Return nil iff it is not."
+  (get-buffer-window hoa-display-buffer))
+
+(defun hoa-display-buffer-refresh ()
+  "Update any displayed automaton with the automaton at point."
+  (if (hoa-display-buffer-active)
+      (hoa-display-automaton-at-point)))
+
+(defun hoa-next-automaton ()
+  "Move to the next automaton, and optionally update display.
+
+This works as `hoa-end-of-automaton', but if an automaton is displayed,
+the display with the new automaton."
+  (interactive)
+  (hoa-end-of-automaton)
+  (hoa-display-buffer-refresh))
+
+(defun hoa-previous-automaton ()
+  "Move to the previous automaton, and optionally update display.
+
+This works as `hoa-start-of-automaton', but if an automaton is displayed,
+the display with the new automaton."
+  (interactive)
+  (unless (hoa-at-start-of-automaton)
+    (hoa-start-of-automaton))
+  (hoa-start-of-automaton)
+  (hoa-display-buffer-refresh))
 
 (defcustom hoa-display-error-buffer "*hoa-dot-error*"
   "The name of the buffer to display errors from `hoa-display-command'."
@@ -175,7 +210,7 @@ the GraphViz package, see URL `http://www.graphviz.org/')."
   :group 'hoa-mode
   :type 'string)
 
-(defun hoa-display-automaton-at-point (arg)
+(defun hoa-display-automaton-at-point (&optional arg)
   "Display the automaton-at-point.
 
 This uses the command in `hoa-display-command' to convert HOA
@@ -234,6 +269,8 @@ be edited before it is executed."
   (let ((map (make-keymap)))
     (define-key map "\M-e" 'hoa-end-of-automaton)
     (define-key map "\M-a" 'hoa-start-of-automaton)
+    (define-key map (kbd "<M-up>") 'hoa-previous-automaton)
+    (define-key map (kbd "<M-down>") 'hoa-next-automaton)
     (define-key map "\C-\M-h" 'hoa-mark-automaton-at-point)
     (define-key map "\C-c\C-c" 'hoa-display-automaton-at-point)
     map)
