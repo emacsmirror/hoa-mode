@@ -1,6 +1,6 @@
 ;;; hoa-mode.el --- Major mode for the HOA format -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015, 2017, 2019  Alexandre Duret-Lutz
+;; Copyright (C) 2015, 2017, 2019-2020  Alexandre Duret-Lutz
 
 ;; Author: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; Maintainer: Alexandre Duret-Lutz <adl@lrde.epita.fr>
@@ -171,7 +171,7 @@ Returns the window of the display buffer, or nil."
   "Move to the next automaton, and optionally update display.
 
 This works as `hoa-end-of-automaton', but if an automaton is displayed,
-the display with the new automaton."
+the display is updated with the new automaton."
   (interactive)
   (hoa-end-of-automaton)
   (hoa-display-buffer-refresh))
@@ -180,7 +180,7 @@ the display with the new automaton."
   "Move to the previous automaton, and optionally update display.
 
 This works as `hoa-start-of-automaton', but if an automaton is displayed,
-the display with the new automaton."
+the display is updated with the new automaton."
   (interactive)
   (unless (hoa-at-start-of-automaton)
     (hoa-start-of-automaton))
@@ -206,7 +206,8 @@ standard output.
 
 The default value uses the tools autfilt (part of the Spot
 package, see URL `https://spot.lrde.epita.fr/') and dot (part of
-the GraphViz package, see URL `http://www.graphviz.org/')."
+the GraphViz package, see URL `http://www.graphviz.org/').
+It also assumes that the Lato font is installed."
   :group 'hoa-mode
   :type 'string)
 
