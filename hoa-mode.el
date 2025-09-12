@@ -1,10 +1,10 @@
 ;;; hoa-mode.el --- Major mode for the HOA format -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015, 2017, 2019-2020  Alexandre Duret-Lutz
+;; Copyright (C) 2015, 2017, 2019, 2020, 2025  Alexandre Duret-Lutz
 
 ;; Author: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; Maintainer: Alexandre Duret-Lutz <adl@lrde.epita.fr>
-;; URL: https://gitlab.lrde.epita.fr/spot/emacs-modes
+;; URL: https://gitlab.lre.epita.fr/spot/emacs-modes
 ;; Keywords: major-mode, automata, convenience
 ;; Created: 2015-11-13
 
@@ -205,7 +205,7 @@ its standard input, and output an image in PNG format on its
 standard output.
 
 The default value uses the tools autfilt (part of the Spot
-package, see URL `https://spot.lrde.epita.fr/') and dot (part of
+package, see URL `https://spot.lre.epita.fr/') and dot (part of
 the GraphViz package, see URL `http://www.graphviz.org/').
 It also assumes that the Lato font is installed."
   :group 'hoa-mode
@@ -262,7 +262,7 @@ be edited before it is executed."
 	  (with-current-buffer (get-buffer-create hoa-display-error-buffer)
 	    (setq buffer-read-only nil)
 	    (erase-buffer)
-	    (format-insert-file errfile nil)
+	    (insert-file-contents errfile)
 	    (display-buffer (current-buffer))))
 	(delete-file errfile))
       (kill-buffer dotbuf)))
@@ -278,7 +278,7 @@ be edited before it is executed."
     map)
   "Keymap for `hoa-mode'.")
 
-;;;### autoload
+;;;###autoload
 (define-derived-mode hoa-mode fundamental-mode "HOA"
   "Major mode for editing files in the Hanoi Omega Automata format.
 
