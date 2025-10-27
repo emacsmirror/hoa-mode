@@ -5,6 +5,8 @@
 ;; Author: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; Maintainer: Alexandre Duret-Lutz <adl@lrde.epita.fr>
 ;; URL: https://gitlab.lre.epita.fr/spot/emacs-modes
+;; Version: 1.0
+;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: major-mode, automata, convenience
 ;; Created: 2015-11-13
 
@@ -38,49 +40,49 @@
 ;;;###autoload
 (add-to-list 'magic-mode-alist '("\\<HOA:\\s-*v" . hoa-mode))
 
-(defgroup hoa-mode nil
+(defgroup hoa nil
   "Major mode for editing Hanoi Omega Automata files."
   :group 'data)
 
-(defgroup hoa-mode-faces nil
+(defgroup hoa-faces nil
   "Faces used by `hoa-mode'."
-  :group 'hoa-mode
+  :group 'hoa
   :group 'faces)
 
 (defface hoa-header-uppercase-face
   '((t :inherit font-lock-type-face :weight bold))
   "Face for headers with an uppercase initial."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-header-lowercase-face
   '((t :inherit font-lock-type-face :weight normal))
   "Face for headers with a lowercase initial."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-keyword-face
   '((t :inherit font-lock-keyword-face))
   "Face used for --BODY--, --END--, and --ABORT--."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-builtin-face
   '((t :inherit font-lock-builtin-face))
   "Face used for Inf, Fin, t, and f."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-acceptance-set-face
   '((t :inherit font-lock-constant-face :weight bold))
   "Face used for acceptance sets."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-alias-face
   '((t :inherit font-lock-variable-name-face))
   "Face used for aliases."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defface hoa-ap-number-face
   '((t :inherit font-lock-constant-face))
   "Face used for numbers that denote atomic propositions."
-  :group 'hoa-mode-faces)
+  :group 'hoa-faces)
 
 (defconst hoa-alias-regex
   "@[a-zA-Z0-9_.-]*\\_>"
@@ -156,6 +158,16 @@
   (set-mark (point))
   (hoa-start-of-automaton))
 
+(defcustom hoa-display-error-buffer "*hoa-dot-error*"
+  "The name of the buffer to display errors from `hoa-display-command'."
+  :group 'hoa
+  :type 'string)
+
+(defcustom hoa-display-buffer "*hoa-display*"
+  "The name of the buffer to display automata."
+  :group 'hoa
+  :type 'string)
+
 (defun hoa-display-buffer-active ()
   "Check whether an HOA automaton is actually displayed.
 
@@ -187,16 +199,6 @@ the display is updated with the new automaton."
   (hoa-start-of-automaton)
   (hoa-display-buffer-refresh))
 
-(defcustom hoa-display-error-buffer "*hoa-dot-error*"
-  "The name of the buffer to display errors from `hoa-display-command'."
-  :group 'hoa-mode
-  :type 'string)
-
-(defcustom hoa-display-buffer "*hoa-display*"
-  "The name of the buffer to display automata."
-  :group 'hoa-mode
-  :type 'string)
-
 (defcustom hoa-display-command "autfilt --dot='barf(Lato)' | dot -Tpng"
   "Command used to display HOA files.
 
@@ -208,7 +210,7 @@ The default value uses the tools autfilt (part of the Spot
 package, see URL `https://spot.lre.epita.fr/') and dot (part of
 the GraphViz package, see URL `http://www.graphviz.org/').
 It also assumes that the Lato font is installed."
-  :group 'hoa-mode
+  :group 'hoa
   :type 'string)
 
 (defun hoa-display-automaton-at-point (&optional arg)
@@ -291,7 +293,7 @@ The following key bindings are installed in hoa-mode:
 By default the `hoa-display-automaton-at-point' function requires
 extra software (Spot and GraphViz), but can be configured to use
 other tools.  See that function for details."
-  :group 'hoa-mode
+  :group 'hoa
   (setq font-lock-defaults '((hoa-font-lock-keywords-1
 			      hoa-font-lock-keywords-1
 			      hoa-font-lock-keywords-2))))
